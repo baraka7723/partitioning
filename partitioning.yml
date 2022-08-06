@@ -1,0 +1,108 @@
+---
+- name: mkdir /appdata
+  shell: mkdir /appdata{1..21}
+
+
+- name: mkdir /appdata
+  file:
+    path: /appdata/
+    state: directory
+
+
+
+# Create a new primary partition 
+- parted:
+    device: "{{item}}"
+    number: 1
+    state: present
+    label: gpt
+    part_end: "100%"
+  loop:
+     - /dev/sdb
+     - /dev/sdc
+     - /dev/sdd
+     - /dev/sde
+     - /dev/sdf
+     - /dev/sdg
+     - /dev/sdh
+     - /dev/sdi
+     - /dev/sdj
+     - /dev/sdk
+     - /dev/sdl
+     - /dev/sdm
+     - /dev/sdn
+     - /dev/sdo
+     - /dev/sdp
+     - /dev/sdq
+     - /dev/sdr
+     - /dev/sds
+     - /dev/sdt
+     - /dev/sdu
+     - /dev/sdv
+     - /dev/sdw
+
+
+- name: Create a xfs filesystem 
+  filesystem:
+    fstype: xfs
+    dev: "{{item}}"
+  loop:
+      - /dev/sdb1
+      - /dev/sdc1
+      - /dev/sdd1
+      - /dev/sde1
+      - /dev/sdf1
+      - /dev/sdg1
+      - /dev/sdh1
+      - /dev/sdi1
+      - /dev/sdj1
+      - /dev/sdk1
+      - /dev/sdl1
+      - /dev/sdm1
+      - /dev/sdn1
+      - /dev/sdo1
+      - /dev/sdp1
+      - /dev/sdq1
+      - /dev/sdr1
+      - /dev/sds1
+      - /dev/sdt1
+      - /dev/sdu1
+      - /dev/sdv1
+      - /dev/sdw1
+
+
+
+- name: Mount up device
+  mount:
+    path: "{{item.path}}"
+    src: "{{item.src}}"
+    fstype: xfs
+    state: present
+  loop:
+    - {path: "/appdata" ,src: "/dev/sdb1" }
+    - {path: "/appdata1" ,src: "/dev/sdc1" }
+    - {path: "/appdata2" ,src: "/dev/sdd1" }
+    - {path: "/appdata3" ,src: "/dev/sde1" }
+    - {path: "/appdata4" ,src: "/dev/sdf1" }
+    - {path: "/appdata5" ,src: "/dev/sdg1" }
+    - {path: "/appdata6" ,src: "/dev/sdh1" }
+    - {path: "/appdata7" ,src: "/dev/sdi1" }
+    - {path: "/appdata8" ,src: "/dev/sdj1" }
+    - {path: "/appdata9" ,src: "/dev/sdk1" }
+    - {path: "/appdata10" ,src: "/dev/sdl1" }
+    - {path: "/appdata11" ,src: "/dev/sdm1" }
+    - {path: "/appdata12" ,src: "/dev/sdn1" }
+    - {path: "/appdata13" ,src: "/dev/sdo1" }
+    - {path: "/appdata14" ,src: "/dev/sdp1" }
+    - {path: "/appdata15" ,src: "/dev/sdq1" }
+    - {path: "/appdata16" ,src: "/dev/sdr1" }
+    - {path: "/appdata17" ,src: "/dev/sds1" }
+    - {path: "/appdata18" ,src: "/dev/sdt1" }
+    - {path: "/appdata19" ,src: "/dev/sdu1" }
+    - {path: "/appdata20" ,src: "/dev/sdv1" }
+    - {path: "/appdata21" ,src: "/dev/sdw1" }
+  tags: part
+
+
+- name: mount a
+  command: mount -a
